@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.kezong.fat-aar'
+
+android {
+    compileSdkVersion 32
+    defaultConfig {
+        targetSdkVersion 32
+        minSdkVersion 15
+        versionCode 1
+        versionName rootProject.ext.sdkVersion
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+task swaarmSDKJarRelease(type: Jar) {
+    from('build/intermediates/javac/release/classes/')
+    archiveFileName = "swaarm-sdk-release.jar"
+}
+
+task swaarmSDKAarRelease() {
+    dependsOn 'assembleRelease'
+
+    if (project.hasProperty('fatAar')) {
+        dependencies {
+            embed 'com.google.android.gms:play-services-appset:16.0.2'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.google.android.gms:play-services-appset:16.0.2'
+}
