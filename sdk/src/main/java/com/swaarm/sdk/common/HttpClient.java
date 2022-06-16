@@ -1,6 +1,7 @@
 package com.swaarm.sdk.common;
 
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.swaarm.sdk.common.model.SwaarmConfig;
 
@@ -17,9 +18,11 @@ public class HttpClient {
 
     private static final String LOG_TAG = "SW_http_client";
     private final SwaarmConfig config;
+    private final String userAgent;
 
-    public HttpClient(SwaarmConfig config) {
+    public HttpClient(SwaarmConfig config, String userAgent) {
         this.config = config;
+        this.userAgent = userAgent;
     }
 
     public HttpResponse post(String connectionString, String data) throws IOException {
@@ -29,6 +32,26 @@ public class HttpClient {
             OutputStream os = urlConnection.getOutputStream();
             os.write(gzip(data));
             os.flush();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((urlConnection.getInputStream())));
+            StringBuilder sb = new StringBuilder();
+
+            String output;
+            while ((output = br.readLine()) != null) {
+                sb.append(output);
+            }
+            return new HttpResponse(sb.toString(), urlConnection.getResponseCode());
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+    }
+
+    public HttpResponse get(String connectionString) throws IOException {
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = createUrlConnection(connectionString);
 
             BufferedReader br = new BufferedReader(new InputStreamReader((urlConnection.getInputStream())));
             StringBuilder sb = new StringBuilder();
@@ -73,7 +96,7 @@ public class HttpClient {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("Content-Encoding", "gzip");
         urlConnection.setRequestProperty("Content-Type", "application/json");
-        urlConnection.setRequestProperty("User-Agent", System.getProperty("http.agent"));
+        urlConnection.setRequestProperty("User-Agent", userAgent);
         urlConnection.setRequestProperty("Authorization", "Bearer "+ config.getAccessToken());
 
         urlConnection.setDoOutput(true);

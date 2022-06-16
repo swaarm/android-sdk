@@ -1,7 +1,9 @@
 package com.swaarm.sdk;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.swaarm.sdk.common.DeviceInfo;
 import com.swaarm.sdk.common.HttpClient;
@@ -38,16 +40,19 @@ public class SwaarmAnalytics {
             return;
         }
 
+        String ua = new WebView(config.getActivity()).getSettings().getUserAgentString();
+
         executor.submit(new Runnable() {
             @Override
             public void run() {
                 if (started.compareAndSet(false, true)) {
+                    Context applicationContext = config.getActivity().getApplicationContext();
+                    SharedPreferences settings = applicationContext.getSharedPreferences("SWAARM_SDK", Context.MODE_PRIVATE);
                     try {
-                        Context applicationContext = config.getActivity().getApplicationContext();
                         SdkConfiguration sdkConfiguration = new SdkConfiguration(applicationContext);
 
                         trackerState = new TrackerState(config, sdkConfiguration, new Session());
-                        httpClient = new HttpClient(config);
+                        httpClient = new HttpClient(config, ua);
                         DeviceInfo deviceInfo = new DeviceInfo(config);
 
                         waitForInitialization(deviceInfo);
@@ -61,8 +66,13 @@ public class SwaarmAnalytics {
                     }
 
                     initialized = true;
+
+                    boolean ranAlready = settings.getBoolean("ranAlready", false);
                     //Very first event is null
-                    event(null,  0.0D);
+                    if (!ranAlready) {
+                        event(null, 0.0D);
+                        settings.edit().putBoolean("ranAlready", true).apply();
+                    }
                 } else {
                     Logger.debug(LOG_TAG, "Already configured");
                 }
