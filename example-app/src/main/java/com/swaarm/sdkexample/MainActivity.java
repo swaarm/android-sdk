@@ -25,10 +25,13 @@ public class MainActivity extends Activity {
                 EditText eventTypeInput = findViewById(R.id.eventType);
                 EditText aggregatedEventValueInput = findViewById(R.id.aggregatedEventValue);
                 EditText customEventValueInput = findViewById(R.id.customEvenValue);
+                EditText revenueInput = findViewById(R.id.revenue);
+
                 SwaarmAnalytics.event(
                         eventTypeInput.getText().toString(),
                         Double.valueOf(aggregatedEventValueInput.getText().toString()),
-                        customEventValueInput.getText().toString()
+                        customEventValueInput.getText().toString(),
+                        Double.valueOf(revenueInput.getText().toString())
                 );
             }
         });

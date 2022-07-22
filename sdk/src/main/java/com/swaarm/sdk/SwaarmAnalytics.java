@@ -68,11 +68,13 @@ public class SwaarmAnalytics {
                     initialized = true;
 
                     boolean ranAlready = settings.getBoolean("ranAlready", false);
-                    //Very first event is null
+                    //Very first time app open event is null
                     if (!ranAlready) {
                         event(null, 0.0D);
                         settings.edit().putBoolean("ranAlready", true).apply();
                     }
+                    //each time app open
+                    event("__open", 0.0D);
                 } else {
                     Logger.debug(LOG_TAG, "Already configured");
                 }
@@ -94,7 +96,7 @@ public class SwaarmAnalytics {
             Log.e(LOG_TAG, "SDK configuration not initialized. Please configure with 'SwaarmAnalytics.configure'");
             return;
         }
-        eventRepository.addEvent(typeId, aggregatedValue, null);
+        eventRepository.addEvent(typeId, aggregatedValue, null, 0.0D);
     }
 
     public static void event(String typeId, Double aggregatedValue, String customValue) {
@@ -102,7 +104,15 @@ public class SwaarmAnalytics {
             Log.e(LOG_TAG, "SDK configuration not initialized. Please configure with 'SwaarmAnalytics.configure'");
             return;
         }
-        eventRepository.addEvent(typeId, aggregatedValue, customValue);
+        eventRepository.addEvent(typeId, aggregatedValue, customValue, 0.0D);
+    }
+
+    public static void event(String typeId, Double aggregatedValue, String customValue, Double revenue) {
+        if (!initialized) {
+            Log.e(LOG_TAG, "SDK configuration not initialized. Please configure with 'SwaarmAnalytics.configure'");
+            return;
+        }
+        eventRepository.addEvent(typeId, aggregatedValue, customValue, revenue);
     }
 
     /**

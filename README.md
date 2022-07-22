@@ -22,7 +22,7 @@ https://jitpack.io/#swaarm/android-sdk - package repository
  ```
 To send event:
  ```
-  SwaarmAnalytics.event("event_type_id", 123D, "custom value")
+  SwaarmAnalytics.event("event_type_id", 123D, "custom value", 321D)
  ```
 
  If display details about tracking: `SwaarmAnalytics.debug(true)`

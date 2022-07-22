@@ -35,7 +35,7 @@ public class EventRepository {
         this.deviceInfo = deviceInfo;
     }
 
-    public void addEvent(String typeId, Double aggregatedValue, String customValue) {
+    public void addEvent(String typeId, Double aggregatedValue, String customValue, Double revenue) {
         if (!trackerState.isTrackingEnabled()) {
             return;
         }
@@ -45,7 +45,8 @@ public class EventRepository {
                 customValue,
                 deviceInfo.getAppSetId(),
                 DateTime.now(),
-                deviceInfo.getOSVersion()
+                deviceInfo.getOSVersion(),
+                revenue
         );
 
         debug(LOG_TAG, format("Storing event with type id '%s'", trackingEvent.getTypeId()));
