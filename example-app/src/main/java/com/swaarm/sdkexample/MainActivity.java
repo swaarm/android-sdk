@@ -1,6 +1,7 @@
 package com.swaarm.sdkexample;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
 
         SwaarmConfig config = new SwaarmConfig(this, "https://organization.swaarm.com", "123");
+        Intent secondaryActivityIntent = new Intent(this, SecondaryActivity.class);
 
         SwaarmAnalytics.configure(config);
         SwaarmAnalytics.debug(true);
@@ -41,9 +43,16 @@ public class MainActivity extends Activity {
                 SwaarmAnalytics.disable();
             }
         });
+
         findViewById(com.swaarm.sdkexample.R.id.resume).setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 SwaarmAnalytics.enable();
+            }
+        });
+
+        findViewById(R.id.secondaryActivity).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+               startActivity(secondaryActivityIntent);
             }
         });
     }

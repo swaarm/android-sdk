@@ -25,7 +25,7 @@ To send event:
   SwaarmAnalytics.event("event_type_id", 123D, "custom value", 321D)
  ```
 
- If display details about tracking: `SwaarmAnalytics.debug(true)`
+ To display SDK debug information: `SwaarmAnalytics.debug(true)`
 
  To disable tracking runtime: `SwaarmAnalytics.disable()`
 

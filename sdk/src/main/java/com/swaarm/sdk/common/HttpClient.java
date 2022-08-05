@@ -106,8 +106,8 @@ public class HttpClient {
     }
 
     public static class HttpResponse {
-        private String data;
-        private Integer statusCode;
+        private final String data;
+        private final Integer statusCode;
 
         public HttpResponse(String data, Integer statusCode) {
             this.data = data;
