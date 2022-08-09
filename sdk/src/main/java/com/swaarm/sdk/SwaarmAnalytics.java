@@ -3,7 +3,6 @@ package com.swaarm.sdk;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.webkit.WebView;
 
 import com.swaarm.sdk.breakpoint.BreakpointAppSetIdRepository;
 import com.swaarm.sdk.breakpoint.TrackedBreakpointRepository;
@@ -12,6 +11,7 @@ import com.swaarm.sdk.common.DeviceInfo;
 import com.swaarm.sdk.common.HttpClient;
 import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.breakpoint.BreakpointScreenshotCapture;
+import com.swaarm.sdk.common.Network;
 import com.swaarm.sdk.common.model.SdkConfiguration;
 import com.swaarm.sdk.common.model.Session;
 import com.swaarm.sdk.common.model.SwaarmConfig;
@@ -27,14 +27,24 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SwaarmAnalytics {
 
     private static final String LOG_TAG = "SW_api";
-    private static final AtomicBoolean started = new AtomicBoolean(false);
+    private static final AtomicBoolean starting = new AtomicBoolean(false);
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private static Boolean initialized = false;
     private static TrackerState trackerState;
     private static EventRepository eventRepository;
+    private static DeviceInfo deviceInfo;
 
     public static void configure(final SwaarmConfig config) {
+        configure(config, null);
+    }
+
+    public static void configure(final SwaarmConfig config, Runnable onComplete) {
+        if (initialized) {
+            Logger.debug(LOG_TAG, "Already initialized");
+            return;
+        }
+
         List<String> validationMessages = config.validate();
         if (!validationMessages.isEmpty()) {
             for (String message : validationMessages) {
@@ -43,13 +53,13 @@ public class SwaarmAnalytics {
             return;
         }
 
-        String ua = new WebView(config.getActivity()).getSettings().getUserAgentString();
+        String ua = Network.getUserAgent(config.getActivity());
 
         executor.submit(new Runnable() {
             @Override
             public void run() {
-                if (!started.compareAndSet(false, true)) {
-                    Logger.debug(LOG_TAG, "Already configured");
+                if (!starting.compareAndSet(false, true)) {
+                    Logger.debug(LOG_TAG, "Already starting initialization");
                     return;
                 }
 
@@ -60,9 +70,7 @@ public class SwaarmAnalytics {
 
                     trackerState = new TrackerState(config, sdkConfiguration, new Session());
                     HttpClient httpClient = new HttpClient(config, ua);
-                    DeviceInfo deviceInfo = new DeviceInfo(config);
-
-                    waitForDeviceInfo(deviceInfo);
+                    deviceInfo = new DeviceInfo(applicationContext);
 
                     eventRepository = new EventRepository(trackerState, deviceInfo);
 
@@ -87,12 +95,16 @@ public class SwaarmAnalytics {
 
                     EventPublisher eventPublisher = new EventPublisher(eventRepository, trackerState, httpClient);
                     eventPublisher.start();
+
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "Failed to initialize Swaarm SDK", e);
                     return;
                 }
 
                 initialized = true;
+                if (onComplete != null) {
+                    onComplete.run();
+                }
 
                 sendStartingEvents(settings);
             }
@@ -182,6 +194,29 @@ public class SwaarmAnalytics {
     }
 
     /**
+     * Set custom App set id
+     *
+     * @param id app set id
+     */
+    public static void setAppSetId(String id) {
+        executeWhenInitialized(new Runnable() {
+            @Override
+            public void run() {
+                deviceInfo.setAppSetId(id);
+            }
+        });
+    }
+
+    /**
+     * Returns true if sdk successfully initialized
+     *
+     * @return boolean
+     */
+    public static boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
      * Resume breakpoint tracking
      */
     public static void enableBreakpointTracking() {
@@ -203,16 +238,6 @@ public class SwaarmAnalytics {
         }
         //each time app open
         event("__open");
-    }
-
-    private static void waitForDeviceInfo(DeviceInfo deviceInfo) {
-        int retries = 30;
-        while (!deviceInfo.isInitialized() && retries-- > 0) {
-            try {
-                Thread.sleep(100L);
-            } catch (InterruptedException ignored) {
-            }
-        }
     }
 
     private static void executeWhenInitialized(Runnable runnable) {

@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.webkit.WebView;
 
 public class Network {
 
@@ -30,5 +31,9 @@ public class Network {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             return networkInfo != null && networkInfo.isConnected();
         }
+    }
+
+    public static String getUserAgent(Context context) {
+        return new WebView(context).getSettings().getUserAgentString();
     }
 }

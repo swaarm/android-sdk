@@ -6,7 +6,7 @@ public class TrackerState {
     private final SdkConfiguration sdkConfiguration;
     private final Session session;
     private boolean trackingEnabled = true;
-    private boolean breakpointTracking = true;
+    private boolean breakpointTracking = false;
 
     public TrackerState(SwaarmConfig config, SdkConfiguration sdkConfiguration, Session session) {
         this.config = config;

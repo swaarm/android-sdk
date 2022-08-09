@@ -7,30 +7,39 @@ import com.google.android.gms.appset.AppSet;
 import com.google.android.gms.appset.AppSetIdClient;
 import com.google.android.gms.appset.AppSetIdInfo;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.swaarm.sdk.common.model.SwaarmConfig;
-
 
 public class DeviceInfo {
 
-    private  AppSetIdInfo appSetIdInfo;
+    private String appSetId;
     private boolean initialized = false;
+    private Consumer<String> onAppSetIdReadyListener;
 
-    public DeviceInfo(SwaarmConfig config) {
-
-        Context context = config.getActivity().getApplicationContext();
+    public DeviceInfo(Context context) {
         AppSetIdClient client = AppSet.getClient(context);
-
         client.getAppSetIdInfo().addOnSuccessListener(new OnSuccessListener<AppSetIdInfo>() {
             @Override
             public void onSuccess(AppSetIdInfo info) {
-                appSetIdInfo = info;
                 initialized = true;
+                appSetId = info.getId();
+                if (onAppSetIdReadyListener != null) {
+                    onAppSetIdReadyListener.accept(info.getId());
+                }
             }
         });
+
+        waitForDeviceInfo();
+    }
+
+    public void setOnAppSetIdReadyListener(Consumer<String> appSetIdReadyListener) {
+        this.onAppSetIdReadyListener = appSetIdReadyListener;
     }
 
     public String getAppSetId() {
-        return appSetIdInfo != null ? appSetIdInfo.getId() : null;
+        return appSetId != null ? appSetId : null;
+    }
+
+    public void setAppSetId(String appSetId) {
+        this.appSetId = appSetId;
     }
 
     public String getOSVersion() {
@@ -41,4 +50,13 @@ public class DeviceInfo {
         return initialized;
     }
 
+    private void waitForDeviceInfo() {
+        int retries = 30;
+        while (!isInitialized() && retries-- > 0) {
+            try {
+                Thread.sleep(100L);
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }
 }

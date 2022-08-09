@@ -74,7 +74,6 @@ public class ViewBreakpointEventHandler {
                             @Override
                             public void accept(String screenshotData) {
                                 sendBreakpoint(screenshotData, activityName);
-                                sessionBreakpointCaptures.add(activityName);
                             }
                         });
                         return;
@@ -103,6 +102,7 @@ public class ViewBreakpointEventHandler {
                     HttpClient.HttpResponse response = httpClient.post(trackerState.getConfig().getEventIngressHostname() + SDK_BREAKPOINTS_ENDPOINT, sdkBreakpoint.toJson().toString());
                     if (response.isSuccess()) {
                         Logger.debug(LOG_TAG, String.format("Breakpoint for activity '%s' saved", activityName));
+                        sessionBreakpointCaptures.add(activityName);
                     } else {
                         Logger.debug(LOG_TAG, String.format("Failed to save breakpoint for activity '%s'", activityName));
                     }

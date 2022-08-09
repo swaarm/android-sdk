@@ -19,6 +19,11 @@ https://jitpack.io/#swaarm/android-sdk - package repository
  ```
    SwaarmConfig config = new SwaarmConfig(this, "https://organization.swaarm.com", "access-token")
    SwaarmAnalytics.configure(config)
+   
+   SwaarmAnalytics.configure(config, () -> {
+         //called when configuration initialization completed
+         //Check the logs for errors when unable to initialize
+    });
  ```
 To send event:
  ```
