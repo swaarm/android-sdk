@@ -23,8 +23,8 @@ public class SdkTrackedViewBreakpoint {
 
     public static SdkTrackedViewBreakpoint fromJson(JSONObject jsonObject) throws JSONException {
         return new SdkTrackedViewBreakpoint(
-                jsonObject.getString("viewName"),
-                jsonObject.getString("eventType")
+                jsonObject.has("viewName") ? jsonObject.getString("viewName") : null,
+                jsonObject.has("eventType") ? jsonObject.getString("eventType") : null
         );
     }
 

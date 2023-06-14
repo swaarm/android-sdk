@@ -29,7 +29,7 @@ public class StartActivity extends Activity {
 
         EditText appSetIdInput = findViewById(R.id.appSetId);
 
-        DeviceInfo deviceInfo = new DeviceInfo(this.getApplicationContext());
+        DeviceInfo deviceInfo = new DeviceInfo(this.getApplicationContext(), null);
         deviceInfo.setOnAppSetIdReadyListener(new Consumer<String>() {
             @Override
             public void accept(String appSetId) {

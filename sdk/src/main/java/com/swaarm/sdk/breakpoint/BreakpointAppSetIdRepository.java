@@ -49,7 +49,7 @@ public class BreakpointAppSetIdRepository {
             if (jsonData.isEmpty()) {
                 return ids;
             }
-            JSONArray enabledIds = new JSONArray(jsonData);
+            JSONArray enabledIds = new JSONArray(jsonData.split(","));
 
             for (int i = 0; i < enabledIds.length(); i++) {
                 ids.add(enabledIds.getString(i));

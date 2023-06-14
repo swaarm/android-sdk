@@ -46,7 +46,8 @@ public class EventRepository {
                 deviceInfo.getAppSetId(),
                 DateTime.now(),
                 deviceInfo.getOSVersion(),
-                revenue
+                revenue,
+                deviceInfo.getGaid()
         );
 
         debug(LOG_TAG, format("Storing event with type id '%s'", trackingEvent.getTypeId()));

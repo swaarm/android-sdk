@@ -70,7 +70,7 @@ public class SwaarmAnalytics {
 
                     trackerState = new TrackerState(config, sdkConfiguration, new Session());
                     HttpClient httpClient = new HttpClient(config, ua);
-                    deviceInfo = new DeviceInfo(applicationContext);
+                    deviceInfo = new DeviceInfo(applicationContext, settings);
 
                     eventRepository = new EventRepository(trackerState, deviceInfo);
 
@@ -102,11 +102,11 @@ public class SwaarmAnalytics {
                 }
 
                 initialized = true;
+                sendInitialEvents(settings);
+
                 if (onComplete != null) {
                     onComplete.run();
                 }
-
-                sendStartingEvents(settings);
             }
         });
     }
@@ -229,7 +229,7 @@ public class SwaarmAnalytics {
         });
     }
 
-    private static void sendStartingEvents(SharedPreferences settings) {
+    private static void sendInitialEvents(SharedPreferences settings) {
         boolean ranAlready = settings.getBoolean("ranAlready", false);
         //Very first time app open event is null
         if (!ranAlready) {

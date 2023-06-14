@@ -12,6 +12,11 @@ public class SwaarmConfig {
 
     public SwaarmConfig(Activity activity, String eventIngressHostname, String accessToken) {
         this.activity = activity;
+
+        if (!eventIngressHostname.startsWith("http")) {
+            eventIngressHostname = "https://" + eventIngressHostname;
+        }
+
         this.eventIngressHostname = eventIngressHostname.replace("/$", "");
         this.accessToken = accessToken;
     }
@@ -38,6 +43,7 @@ public class SwaarmConfig {
         if (eventIngressHostname == null) {
             messages.add("Missing event ingress hostname");
         }
+
         if (activity == null) {
             messages.add("Activity is not set");
         }
