@@ -5,7 +5,7 @@
 * "android.permission.ACCESS_NETWORK_STATE" - for collecting network related information (is device
   connected/disconnected)
 * "android.permission.INTERNET" - for sending data to our servers
-* "com.google.android.gms.permission.AD_ID" - for reading advertising ID
+* "com.google.android.gms.permission.AD_ID" - for reading advertising ID (Gaid)
 
 ### Dependencies
 
@@ -45,7 +45,10 @@ To disable tracking runtime: `SwaarmAnalytics.disable()`
 
 To enable tracking runtime: `SwaarmAnalytics.enable()`
 
-To activate breakpoint tracking: `SwaarmAnalytics.enableBreakpointTracking()`. This will collect your App activity breakpoints and send to our backend for further event configuration.
+To activate breakpoint tracking: `SwaarmAnalytics.enableBreakpointTracking()`. This will collect your App activity breakpoints and send to our backend for further event configuration. 
+Navigate through all the app while this active to have all the possible breakpoints collected.
+
+
 
 
 
