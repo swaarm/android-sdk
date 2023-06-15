@@ -15,6 +15,7 @@ public class TrackingEvent {
     private final String clientTime;
     private final String osv;
     private final Double revenue;
+    private final String advertisingId;
 
     public TrackingEvent(
             String typeId,
@@ -23,7 +24,8 @@ public class TrackingEvent {
             String vendorId,
             String clientTime,
             String osv,
-            Double revenue
+            Double revenue,
+            String advertisingId
     ) {
         this.id = UUID.randomUUID().toString();
         this.typeId = typeId;
@@ -33,6 +35,7 @@ public class TrackingEvent {
         this.clientTime = clientTime;
         this.osv = osv;
         this.revenue = revenue;
+        this.advertisingId = advertisingId;
     }
 
     public String getId() {
@@ -67,6 +70,10 @@ public class TrackingEvent {
         return revenue;
     }
 
+    public String getAdvertisingId() {
+        return advertisingId;
+    }
+
     public JSONObject toJson() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("typeId", typeId);
@@ -76,6 +83,7 @@ public class TrackingEvent {
         obj.put("clientTime", clientTime);
         obj.put("osv", osv);
         obj.put("revenue", revenue);
+        obj.put("advertisingId", advertisingId);
         return obj;
     }
 }

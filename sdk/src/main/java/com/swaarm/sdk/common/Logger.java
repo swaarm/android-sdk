@@ -13,6 +13,13 @@ public class Logger {
         Log.d(tag, message);
     }
 
+    public static void error(String tag, String message, Throwable e) {
+        if (!isEnabled) {
+            return;
+        }
+        Log.e(tag, message, e);
+    }
+
     public static void setIsEnabled(boolean isEnabled) {
         Logger.isEnabled = isEnabled;
     }

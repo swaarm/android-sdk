@@ -94,6 +94,7 @@ public class HttpClient {
     private HttpURLConnection createUrlConnection(String connectionString) throws IOException {
         URL url = new URL(connectionString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setConnectTimeout(5 * 1000);
         urlConnection.setRequestProperty("Content-Encoding", "gzip");
         urlConnection.setRequestProperty("Content-Type", "application/json");
         urlConnection.setRequestProperty("User-Agent", userAgent);
@@ -106,8 +107,8 @@ public class HttpClient {
     }
 
     public static class HttpResponse {
-        private String data;
-        private Integer statusCode;
+        private final String data;
+        private final Integer statusCode;
 
         public HttpResponse(String data, Integer statusCode) {
             this.data = data;
