@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.swaarm.sdk.common.DateTime;
 import com.swaarm.sdk.common.HttpClient;
+import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.common.Network;
 import com.swaarm.sdk.common.model.TrackerState;
 import com.swaarm.sdk.trackingevent.model.TrackingEvent;
@@ -73,7 +74,7 @@ public class EventPublisher {
 
                     sendEvents(events);
                 } catch (Exception e) {
-                    Log.e(LOG_TAG, "An error occurred while publishing tracking event", e);
+                    error(LOG_TAG, "An error occurred while publishing tracking event", e);
                     failedAttempts++;
                 }
             }

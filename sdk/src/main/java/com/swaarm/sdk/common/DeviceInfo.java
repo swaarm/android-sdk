@@ -6,7 +6,6 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.appset.AppSet;
 import com.google.android.gms.appset.AppSetIdClient;
 import com.google.android.gms.appset.AppSetIdInfo;
@@ -88,8 +87,12 @@ public class DeviceInfo {
 
     private void setGaid(Context context) {
         try {
-            AdvertisingIdClient.Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
-            gaid = adInfo.getId();
+            Object advertisingObject = Reflection.getAdvertisingInfoObject(context);
+            if (advertisingObject == null) {
+                return;
+            }
+
+            gaid = Reflection.getAdvertisingId(advertisingObject);
         } catch (Exception e) {
             Logger.error(LOG_TAG, "Unable to set advertising id", e);
         }
