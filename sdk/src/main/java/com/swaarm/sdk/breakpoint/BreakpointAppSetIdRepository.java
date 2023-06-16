@@ -1,5 +1,7 @@
 package com.swaarm.sdk.breakpoint;
 
+import static com.swaarm.sdk.common.Logger.*;
+
 import android.util.Log;
 
 import com.swaarm.sdk.common.HttpClient;
@@ -54,6 +56,8 @@ public class BreakpointAppSetIdRepository {
             for (int i = 0; i < enabledIds.length(); i++) {
                 ids.add(enabledIds.getString(i));
             }
+
+            debug(LOG_TAG, String.format("%s app set ids/vendorIds allowed to track breakpoints", ids));
 
             initialized = true;
 

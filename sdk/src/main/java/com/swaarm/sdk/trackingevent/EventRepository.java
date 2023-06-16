@@ -6,7 +6,6 @@ import static java.lang.String.*;
 
 import com.swaarm.sdk.common.DateTime;
 import com.swaarm.sdk.common.DeviceInfo;
-import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.common.model.TrackerState;
 import com.swaarm.sdk.trackingevent.model.TrackingEvent;
 
@@ -50,8 +49,9 @@ public class EventRepository {
                 deviceInfo.getGaid()
         );
 
-        debug(LOG_TAG, format("Storing event with type id '%s'", trackingEvent.getTypeId()));
         eventStore.put(trackingEvent.getId(), trackingEvent);
+        debug(LOG_TAG, format("Stored event with type id '%s'. Events in store '%s'", trackingEvent.getTypeId(), eventStore.size()));
+
     }
     public List<TrackingEvent> getEvents(Integer limit) {
         List<TrackingEvent> events = new ArrayList<>();

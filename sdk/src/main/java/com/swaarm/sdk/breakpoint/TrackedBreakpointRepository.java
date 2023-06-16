@@ -1,5 +1,7 @@
 package com.swaarm.sdk.breakpoint;
 
+import static com.swaarm.sdk.common.Logger.*;
+
 import android.util.Log;
 
 import com.swaarm.sdk.breakpoint.model.SdkTrackedViewBreakpoint;
@@ -52,6 +54,8 @@ public class TrackedBreakpointRepository {
             for (SdkTrackedViewBreakpoint breakpoint : trackedBreakpoints.getViewBreakpoints()) {
                 breakpoints.put(breakpoint.getViewName(), breakpoint);
             }
+
+            debug(LOG_TAG, String.format("'%s' tracking breakpoints read", breakpoints.size()));
 
             initialized = true;
 

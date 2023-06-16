@@ -1,5 +1,7 @@
 package com.swaarm.sdk.breakpoint;
 
+import static com.swaarm.sdk.common.Logger.*;
+
 import android.util.Log;
 import android.view.View;
 
@@ -9,7 +11,6 @@ import com.swaarm.sdk.breakpoint.model.SdkTrackedViewBreakpoint;
 import com.swaarm.sdk.breakpoint.model.SdkBreakpointType;
 import com.swaarm.sdk.common.Consumer;
 import com.swaarm.sdk.common.HttpClient;
-import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.common.model.TrackerState;
 import com.swaarm.sdk.trackingevent.EventRepository;
 
@@ -80,6 +81,8 @@ public class ViewBreakpointEventHandler {
                     }
 
                     SdkTrackedViewBreakpoint breakpoint = breakpointEventsRepository.getBreakpoint(activityName);
+
+                    debug(LOG_TAG, String.format("Breakpoint for event '%s' and activity '%s' captured.", activityName, breakpoint.getEventType()));
                     eventRepository.addEvent(breakpoint.getEventType(), 1D, null, null);
 
                 } catch (Exception e) {
@@ -101,10 +104,10 @@ public class ViewBreakpointEventHandler {
                 try {
                     HttpClient.HttpResponse response = httpClient.post(trackerState.getConfig().getEventIngressHostname() + SDK_BREAKPOINTS_ENDPOINT, sdkBreakpoint.toJson().toString());
                     if (response.isSuccess()) {
-                        Logger.debug(LOG_TAG, String.format("Breakpoint for activity '%s' saved", activityName));
+                        debug(LOG_TAG, String.format("Breakpoint for activity '%s' saved", activityName));
                         sessionBreakpointCaptures.add(activityName);
                     } else {
-                        Logger.debug(LOG_TAG, String.format("Failed to save breakpoint for activity '%s'", activityName));
+                        debug(LOG_TAG, String.format("Failed to save breakpoint for activity '%s'", activityName));
                     }
                 } catch (IOException | JSONException e) {
                     Log.e(LOG_TAG, String.format("Failed to handle breakpoint for activity %s", activityName), e);

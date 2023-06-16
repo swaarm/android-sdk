@@ -52,7 +52,7 @@ public class EventPublisher {
             public void run() {
                 try {
                     if (shouldStop()) {
-                        debug(LOG_TAG, "Stopping publisher. Too many failed attempts");
+                        debug(LOG_TAG, "Stopping event publisher. Too many failed attempts");
                         scheduler.shutdown();
                         return;
                     }
