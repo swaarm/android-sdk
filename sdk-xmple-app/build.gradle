@@ -6,16 +6,16 @@ android {
         applicationId 'com.swaarm.sdkxmple'
         targetSdkVersion 32
         minSdkVersion 19
-        versionCode 1
+        versionCode 2
         versionName "1.0"
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //implementation 'com.github.swaarm:android-sdk:v0.2.0-RC'
+    //implementation 'com.github.swaarm:android-sdk:v0.2.0-RC2'
 
     implementation 'com.google.android.gms:play-services-appset:16.0.2'
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
-    //implementation project(':sdk')
+    implementation project(':sdk')
 }

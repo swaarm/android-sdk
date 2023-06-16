@@ -12,7 +12,7 @@ import android.webkit.WebView;
 
 public class Network {
 
-    public static boolean isNetworkAvailable(Application application) {
+    public static boolean isNetworkAvailable(Context application) {
         if (!Permission.isGranted(application, permission.INTERNET) ||
                 !Permission.isGranted(application, permission.ACCESS_NETWORK_STATE)
         ) {

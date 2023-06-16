@@ -1,5 +1,6 @@
 package com.swaarm.sdk;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -53,7 +54,7 @@ public class SwaarmAnalytics {
             return;
         }
 
-        String ua = Network.getUserAgent(config.getActivity());
+        String ua = Network.getUserAgent(config.getContext());
 
         executor.submit(new Runnable() {
             @Override
@@ -63,7 +64,7 @@ public class SwaarmAnalytics {
                     return;
                 }
 
-                Context applicationContext = config.getActivity().getApplicationContext();
+                Context applicationContext = config.getContext().getApplicationContext();
                 SharedPreferences settings = applicationContext.getSharedPreferences("SWAARM_SDK", Context.MODE_PRIVATE);
                 try {
                     SdkConfiguration sdkConfiguration = new SdkConfiguration(applicationContext);
@@ -91,7 +92,9 @@ public class SwaarmAnalytics {
                             trackerState
                     );
 
-                    config.getActivity().getApplication().registerActivityLifecycleCallbacks(new ActivityLifecycleListener(viewBreakpointHandler));
+                    if (config.getContext() instanceof Application) {
+                        ((Application)config.getContext()).registerActivityLifecycleCallbacks(new ActivityLifecycleListener(viewBreakpointHandler));
+                    }
 
                     EventPublisher eventPublisher = new EventPublisher(eventRepository, trackerState, httpClient);
                     eventPublisher.start();

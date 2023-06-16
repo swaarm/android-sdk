@@ -1,17 +1,18 @@
 package com.swaarm.sdk.common.model;
 
-import android.app.Activity;
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SwaarmConfig {
 
-    private final Activity activity;
+    private final Context context;
     private final String eventIngressHostname;
     private final String accessToken;
 
-    public SwaarmConfig(Activity activity, String eventIngressHostname, String accessToken) {
-        this.activity = activity;
+    public SwaarmConfig(Context context, String eventIngressHostname, String accessToken) {
+        this.context = context;
 
         if (!eventIngressHostname.startsWith("http")) {
             eventIngressHostname = "https://" + eventIngressHostname;
@@ -21,8 +22,8 @@ public class SwaarmConfig {
         this.accessToken = accessToken;
     }
 
-    public Activity getActivity() {
-        return activity;
+    public Context getContext() {
+        return context;
     }
 
     public String getEventIngressHostname() {
@@ -44,7 +45,7 @@ public class SwaarmConfig {
             messages.add("Missing event ingress hostname");
         }
 
-        if (activity == null) {
+        if (context == null) {
             messages.add("Activity is not set");
         }
 

@@ -35,7 +35,7 @@ public class BreakpointAppSetIdRepository {
     }
 
     private Set<String> fetchEnabledIds() {
-        if (initialized || !Network.isNetworkAvailable(config.getActivity().getApplication())) {
+        if (initialized || !Network.isNetworkAvailable(config.getContext())) {
             return ids;
         }
 

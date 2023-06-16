@@ -68,7 +68,7 @@ public class EventActivity extends Activity {
 
     private void initSdk(Bundle userConfigValues) {
         SwaarmConfig config = new SwaarmConfig(
-                this,
+                this.getApplication(),
                 userConfigValues.getString("trackerHostname"),
                 userConfigValues.getString("accessToken")
         );

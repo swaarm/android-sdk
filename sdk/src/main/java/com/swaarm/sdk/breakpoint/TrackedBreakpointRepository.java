@@ -36,7 +36,7 @@ public class TrackedBreakpointRepository {
     }
 
     private Map<String, SdkTrackedViewBreakpoint> fetchConfiguredBreakpoints() {
-        if (initialized || !Network.isNetworkAvailable(config.getActivity().getApplication())) {
+        if (initialized || !Network.isNetworkAvailable(config.getContext())) {
             return breakpoints;
         }
 

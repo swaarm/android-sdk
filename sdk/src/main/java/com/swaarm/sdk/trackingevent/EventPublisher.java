@@ -3,11 +3,8 @@ package com.swaarm.sdk.trackingevent;
 import static com.swaarm.sdk.common.Logger.*;
 import static java.lang.String.*;
 
-import android.util.Log;
-
 import com.swaarm.sdk.common.DateTime;
 import com.swaarm.sdk.common.HttpClient;
-import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.common.Network;
 import com.swaarm.sdk.common.model.TrackerState;
 import com.swaarm.sdk.trackingevent.model.TrackingEvent;
@@ -93,7 +90,7 @@ public class EventPublisher {
     }
 
     public boolean isConnected() {
-        return Network.isNetworkAvailable(trackerState.getConfig().getActivity().getApplication());
+        return Network.isNetworkAvailable(trackerState.getConfig().getContext());
     }
 
     private void sendEvents(final List<TrackingEvent> events) throws JSONException, IOException {
