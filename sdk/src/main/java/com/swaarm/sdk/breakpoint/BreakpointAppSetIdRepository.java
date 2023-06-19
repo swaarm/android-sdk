@@ -5,6 +5,7 @@ import static com.swaarm.sdk.common.Logger.*;
 import android.util.Log;
 
 import com.swaarm.sdk.common.HttpClient;
+import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.common.Network;
 import com.swaarm.sdk.common.model.SwaarmConfig;
 
@@ -62,7 +63,7 @@ public class BreakpointAppSetIdRepository {
             initialized = true;
 
         } catch (IOException | JSONException e) {
-            Log.e(LOG_TAG, "Failed to read app set ids", e);
+           error(LOG_TAG, "Failed to read app set ids", e);
         }
 
         return ids;

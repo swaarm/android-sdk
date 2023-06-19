@@ -11,6 +11,7 @@ import com.swaarm.sdk.breakpoint.model.SdkTrackedViewBreakpoint;
 import com.swaarm.sdk.breakpoint.model.SdkBreakpointType;
 import com.swaarm.sdk.common.Consumer;
 import com.swaarm.sdk.common.HttpClient;
+import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.common.model.TrackerState;
 import com.swaarm.sdk.trackingevent.EventRepository;
 
@@ -86,7 +87,7 @@ public class ViewBreakpointEventHandler {
                     eventRepository.addEvent(breakpoint.getEventType(), 1D, null, null);
 
                 } catch (Exception e) {
-                    Log.e(LOG_TAG, "Failed to handle breakpoint", e);
+                   error(LOG_TAG, "Failed to handle breakpoint", e);
                 }
             }
         });
@@ -110,7 +111,7 @@ public class ViewBreakpointEventHandler {
                         debug(LOG_TAG, String.format("Failed to save breakpoint for activity '%s'", activityName));
                     }
                 } catch (IOException | JSONException e) {
-                    Log.e(LOG_TAG, String.format("Failed to handle breakpoint for activity %s", activityName), e);
+                   error(LOG_TAG, String.format("Failed to handle breakpoint for activity %s", activityName), e);
                 }
             }
         });
