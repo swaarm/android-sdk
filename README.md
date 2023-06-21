@@ -34,11 +34,19 @@ token:
     });
  ```
 
+### API
+
 Sending event:
 
  ```
-  SwaarmAnalytics.event("event_type_id", 123D, "custom value", 321D)
+  SwaarmAnalytics.event("eventType", 123D, "custom value", 321D)
  ```
+
+Sending purchase event:
+
+```
+  SwaarmAnalytics.purchase("eventType", "120D", "USD", "subscriptionId/productId", "payment token", "custom value);
+```
 
 To display SDK debug information: `SwaarmAnalytics.debug(true)`
 
@@ -46,8 +54,9 @@ To disable tracking runtime: `SwaarmAnalytics.disable()`
 
 To enable tracking runtime: `SwaarmAnalytics.enable()`
 
-To activate breakpoint tracking: `SwaarmAnalytics.enableBreakpointTracking()`. This will collect your App activity breakpoints and send to our backend for further event configuration. 
-Navigate through all the app while this active to have all the possible breakpoints collected.
+To activate breakpoint tracking: `SwaarmAnalytics.enableBreakpointTracking()`. This will collect
+your App activity breakpoints and send to our backend for further event configuration. Navigate
+through all the app while this active to have all the possible breakpoints collected.
 
 
 

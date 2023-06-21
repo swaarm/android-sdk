@@ -16,6 +16,8 @@ public class TrackingEvent {
     private final String osv;
     private final Double revenue;
     private final String advertisingId;
+    private final String currency;
+    private final PurchaseValidation purchaseValidation;
 
     public TrackingEvent(
             String typeId,
@@ -25,8 +27,11 @@ public class TrackingEvent {
             String clientTime,
             String osv,
             Double revenue,
-            String advertisingId
+            String advertisingId,
+            String currency,
+            PurchaseValidation purchaseValidation
     ) {
+        this.purchaseValidation = purchaseValidation;
         this.id = UUID.randomUUID().toString();
         this.typeId = typeId;
         this.aggregatedValue = aggregatedValue;
@@ -35,6 +40,7 @@ public class TrackingEvent {
         this.clientTime = clientTime;
         this.osv = osv;
         this.revenue = revenue;
+        this.currency = currency;
         this.advertisingId = advertisingId;
     }
 
@@ -84,6 +90,10 @@ public class TrackingEvent {
         obj.put("osv", osv);
         obj.put("revenue", revenue);
         obj.put("advertisingId", advertisingId);
+        obj.put("currency", currency);
+        if (purchaseValidation != null) {
+            obj.put("androidPurchaseValidation", purchaseValidation.toJson());
+        }
         return obj;
     }
 }

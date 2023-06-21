@@ -60,7 +60,7 @@ public class SwaarmAnalytics {
             @Override
             public void run() {
                 if (!starting.compareAndSet(false, true)) {
-                    Logger.debug(LOG_TAG, "Already starting initialization");
+                    Logger.debug(LOG_TAG, "Already started initialization");
                     return;
                 }
 
@@ -146,6 +146,15 @@ public class SwaarmAnalytics {
             @Override
             public void run() {
                 eventRepository.addEvent(typeId, aggregatedValue, customValue, revenue);
+            }
+        });
+    }
+
+    public static void purchase(String typeId, Double amount, String currency, String subscriptionId, String token, String customValue) {
+        executeWhenInitialized(new Runnable() {
+            @Override
+            public void run() {
+                eventRepository.addEvent(typeId, 1d, customValue, amount, currency, subscriptionId, token);
             }
         });
     }
@@ -245,13 +254,13 @@ public class SwaarmAnalytics {
 
     private static void executeWhenInitialized(Runnable runnable) {
         if (!initialized) {
-            Log.e(LOG_TAG, "SDK configuration not initialized. Please configure with 'SwaarmAnalytics.configure'");
+            Logger.debug(LOG_TAG, "SDK configuration not initialized. Please configure with 'SwaarmAnalytics.configure'");
             return;
         }
         try {
             runnable.run();
         } catch (Exception e) {
-            Log.e(LOG_TAG, "An error occurred while executing swaarm SDK API call", e);
+            Logger.error(LOG_TAG, "An error occurred while executing Swaarm SDK API call", e);
         }
     }
 

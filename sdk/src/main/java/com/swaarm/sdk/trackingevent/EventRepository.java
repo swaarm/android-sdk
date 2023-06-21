@@ -7,6 +7,7 @@ import static java.lang.String.*;
 import com.swaarm.sdk.common.DateTime;
 import com.swaarm.sdk.common.DeviceInfo;
 import com.swaarm.sdk.common.model.TrackerState;
+import com.swaarm.sdk.trackingevent.model.PurchaseValidation;
 import com.swaarm.sdk.trackingevent.model.TrackingEvent;
 
 import java.util.ArrayList;
@@ -33,8 +34,19 @@ public class EventRepository {
         this.trackerState = trackerState;
         this.deviceInfo = deviceInfo;
     }
-
     public void addEvent(String typeId, Double aggregatedValue, String customValue, Double revenue) {
+       addEvent(typeId, aggregatedValue, customValue, revenue, null, null, null);
+    }
+
+    public void addEvent(
+            String typeId,
+            Double aggregatedValue,
+            String customValue,
+            Double revenue,
+            String currency,
+            String subscriptionId,
+            String paymentToken
+    ) {
         if (!trackerState.isTrackingEnabled()) {
             return;
         }
@@ -46,12 +58,13 @@ public class EventRepository {
                 DateTime.now(),
                 deviceInfo.getOSVersion(),
                 revenue,
-                deviceInfo.getGaid()
+                deviceInfo.getGaid(),
+                currency,
+                (subscriptionId != null || paymentToken != null) ? new PurchaseValidation(subscriptionId, paymentToken) : null
         );
 
         eventStore.put(trackingEvent.getId(), trackingEvent);
         debug(LOG_TAG, format("Stored event with type id '%s'. Events in store '%s'", trackingEvent.getTypeId(), eventStore.size()));
-
     }
     public List<TrackingEvent> getEvents(Integer limit) {
         List<TrackingEvent> events = new ArrayList<>();
