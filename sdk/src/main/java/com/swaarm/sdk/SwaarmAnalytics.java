@@ -1,5 +1,6 @@
 package com.swaarm.sdk;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -93,7 +94,8 @@ public class SwaarmAnalytics {
                     );
 
                     if (config.getContext() instanceof Application) {
-                        ((Application)config.getContext()).registerActivityLifecycleCallbacks(new ActivityLifecycleListener(viewBreakpointHandler));
+                        Application app = ((Application) config.getContext());
+                        app.registerActivityLifecycleCallbacks(new ActivityLifecycleListener(viewBreakpointHandler));
                     }
 
                     EventPublisher eventPublisher = new EventPublisher(eventRepository, trackerState, httpClient);

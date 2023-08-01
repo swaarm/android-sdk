@@ -11,7 +11,6 @@ import com.swaarm.sdk.breakpoint.ViewBreakpointEventHandler;
 
 public class ActivityLifecycleListener implements Application.ActivityLifecycleCallbacks {
 
-    private static final String LOG_TAG = "SW_lifecycle_event";
     private final ViewBreakpointEventHandler breakpointEventHandler;
 
     public ActivityLifecycleListener(ViewBreakpointEventHandler breakpointEventHandler) {
@@ -26,15 +25,22 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
             return;
         }
 
+        String activityName = activity.getClass().getCanonicalName();
 
         breakpointEventHandler.handle(
                 activity.getWindow().getDecorView().getRootView(),
-                activity.getClass().getCanonicalName()
+                activityName
         );
     }
 
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            activity.getFragmentManager().registerFragmentLifecycleCallbacks(
+                    new FragmentLifecycleListener(breakpointEventHandler),
+                    false
+            );
+        }
     }
 
     @Override
@@ -60,4 +66,5 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
     }
+
 }
