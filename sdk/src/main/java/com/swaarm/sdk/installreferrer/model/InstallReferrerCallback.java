@@ -9,10 +9,6 @@ public abstract class InstallReferrerCallback implements Runnable {
         this.installReferrerData = new InstallReferrerData(
                 referrerDetails.getReferrerClickTimestampSeconds(),
                 referrerDetails.getReferrerClickTimestampServerSeconds(),
-                referrerDetails.getInstallBeginTimestampSeconds(),
-                referrerDetails.getInstallBeginTimestampServerSeconds(),
-                referrerDetails.getInstallVersion(),
-                referrerDetails.getGooglePlayInstantParam(),
                 referrerDetails.getInstallReferrer());
     }
 
