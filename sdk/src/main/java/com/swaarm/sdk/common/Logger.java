@@ -20,6 +20,13 @@ public class Logger {
         Log.e(tag, message, e);
     }
 
+    public static void error(String tag, String message) {
+        if (!isEnabled) {
+            return;
+        }
+        Log.e(tag, message);
+    }
+
     public static void setIsEnabled(boolean isEnabled) {
         Logger.isEnabled = isEnabled;
     }

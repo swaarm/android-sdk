@@ -1,5 +1,7 @@
 package com.swaarm.sdk.trackingevent.model;
 
+import com.swaarm.sdk.installreferrer.model.InstallReferrerData;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +20,7 @@ public class TrackingEvent {
     private final String advertisingId;
     private final String currency;
     private final PurchaseValidation purchaseValidation;
+    private final InstallReferrerData installReferrer;
 
     public TrackingEvent(
             String typeId,
@@ -29,7 +32,8 @@ public class TrackingEvent {
             Double revenue,
             String advertisingId,
             String currency,
-            PurchaseValidation purchaseValidation
+            PurchaseValidation purchaseValidation,
+            InstallReferrerData installReferrer
     ) {
         this.purchaseValidation = purchaseValidation;
         this.id = UUID.randomUUID().toString();
@@ -42,6 +46,7 @@ public class TrackingEvent {
         this.revenue = revenue;
         this.currency = currency;
         this.advertisingId = advertisingId;
+        this.installReferrer = installReferrer;
     }
 
     public String getId() {
@@ -93,6 +98,9 @@ public class TrackingEvent {
         obj.put("currency", currency);
         if (purchaseValidation != null) {
             obj.put("androidPurchaseValidation", purchaseValidation.toJson());
+        }
+        if (installReferrer != null) {
+            obj.put("installReferrer", installReferrer.toJson());
         }
         return obj;
     }

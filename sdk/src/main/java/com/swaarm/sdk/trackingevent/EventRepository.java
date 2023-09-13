@@ -7,6 +7,7 @@ import static java.lang.String.*;
 import com.swaarm.sdk.common.DateTime;
 import com.swaarm.sdk.common.DeviceInfo;
 import com.swaarm.sdk.common.model.TrackerState;
+import com.swaarm.sdk.installreferrer.model.InstallReferrerData;
 import com.swaarm.sdk.trackingevent.model.PurchaseValidation;
 import com.swaarm.sdk.trackingevent.model.TrackingEvent;
 
@@ -34,8 +35,13 @@ public class EventRepository {
         this.trackerState = trackerState;
         this.deviceInfo = deviceInfo;
     }
+
+    public void addInstallEvent(InstallReferrerData installReferrerData) {
+        addEvent(null, 0.0D, null, 0.0D, null, null, null, installReferrerData);
+    }
+
     public void addEvent(String typeId, Double aggregatedValue, String customValue, Double revenue) {
-       addEvent(typeId, aggregatedValue, customValue, revenue, null, null, null);
+       addEvent(typeId, aggregatedValue, customValue, revenue, null, null, null, null);
     }
 
     public void addEvent(
@@ -45,7 +51,19 @@ public class EventRepository {
             Double revenue,
             String currency,
             String subscriptionId,
-            String paymentToken
+            String paymentToken) {
+        addEvent(typeId, aggregatedValue, customValue, revenue, currency, subscriptionId, paymentToken, null);
+    }
+
+    private void addEvent(
+            String typeId,
+            Double aggregatedValue,
+            String customValue,
+            Double revenue,
+            String currency,
+            String subscriptionId,
+            String paymentToken,
+            InstallReferrerData installReferrerData
     ) {
         if (!trackerState.isTrackingEnabled()) {
             return;
@@ -60,7 +78,8 @@ public class EventRepository {
                 revenue,
                 deviceInfo.getGaid(),
                 currency,
-                (subscriptionId != null || paymentToken != null) ? new PurchaseValidation(subscriptionId, paymentToken) : null
+                (subscriptionId != null || paymentToken != null) ? new PurchaseValidation(subscriptionId, paymentToken) : null,
+                installReferrerData
         );
 
         eventStore.put(trackingEvent.getId(), trackingEvent);

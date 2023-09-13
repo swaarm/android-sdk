@@ -1,23 +1,25 @@
 package com.swaarm.sdk;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.swaarm.sdk.breakpoint.BreakpointAppSetIdRepository;
+import com.swaarm.sdk.breakpoint.BreakpointScreenshotCapture;
 import com.swaarm.sdk.breakpoint.TrackedBreakpointRepository;
 import com.swaarm.sdk.breakpoint.ViewBreakpointEventHandler;
 import com.swaarm.sdk.common.DeviceInfo;
 import com.swaarm.sdk.common.HttpClient;
 import com.swaarm.sdk.common.Logger;
-import com.swaarm.sdk.breakpoint.BreakpointScreenshotCapture;
 import com.swaarm.sdk.common.Network;
 import com.swaarm.sdk.common.model.SdkConfiguration;
 import com.swaarm.sdk.common.model.Session;
 import com.swaarm.sdk.common.model.SwaarmConfig;
 import com.swaarm.sdk.common.model.TrackerState;
+import com.swaarm.sdk.installreferrer.InstallReferrerProcessor;
+import com.swaarm.sdk.installreferrer.model.InstallReferrerCallback;
+import com.swaarm.sdk.installreferrer.model.InstallReferrerData;
 import com.swaarm.sdk.trackingevent.EventPublisher;
 import com.swaarm.sdk.trackingevent.EventRepository;
 
@@ -36,6 +38,7 @@ public class SwaarmAnalytics {
     private static TrackerState trackerState;
     private static EventRepository eventRepository;
     private static DeviceInfo deviceInfo;
+    private static InstallReferrerProcessor installReferrerProcessor;
 
     public static void configure(final SwaarmConfig config) {
         configure(config, null);
@@ -76,6 +79,8 @@ public class SwaarmAnalytics {
 
                     eventRepository = new EventRepository(trackerState, deviceInfo);
 
+                    installReferrerProcessor = new InstallReferrerProcessor(applicationContext);
+
                     BreakpointAppSetIdRepository breakpointAppSetIdRepository = new BreakpointAppSetIdRepository(httpClient, config);
 
                     BreakpointScreenshotCapture screenshotCapture = new BreakpointScreenshotCapture(
@@ -112,6 +117,15 @@ public class SwaarmAnalytics {
                 if (onComplete != null) {
                     onComplete.run();
                 }
+            }
+        });
+    }
+
+    public static void installEvent(InstallReferrerData installReferrerData) {
+        executeWhenInitialized(new Runnable() {
+            @Override
+            public void run() {
+                eventRepository.addInstallEvent(installReferrerData);
             }
         });
     }
@@ -247,8 +261,14 @@ public class SwaarmAnalytics {
         boolean ranAlready = settings.getBoolean("ranAlready", false);
         //Very first time app open event is null
         if (!ranAlready) {
-            event(null);
-            settings.edit().putBoolean("ranAlready", true).apply();
+            installReferrerProcessor.fetchReferrerData(new InstallReferrerCallback() {
+                @Override
+                public void run() {
+                    installEvent(getInstallReferrerData());
+                    settings.edit().putBoolean("ranAlready", true).apply();
+                }
+            });
+
         }
         //each time app open
         event("__open");
