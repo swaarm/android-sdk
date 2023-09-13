@@ -8,7 +8,7 @@ public abstract class InstallReferrerCallback implements Runnable {
     public void processDetails(ReferrerDetails referrerDetails) {
         this.installReferrerData = new InstallReferrerData(
                 referrerDetails.getReferrerClickTimestampSeconds(),
-                referrerDetails.getReferrerClickTimestampServerSeconds(),
+                referrerDetails.getInstallBeginTimestampSeconds(),
                 referrerDetails.getInstallReferrer());
     }
 
