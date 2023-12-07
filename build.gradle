@@ -1,3 +1,4 @@
+
 ext {
     sdkVersion = project.hasProperty('version') ? project.property("version") : "local"
 }
@@ -30,8 +31,6 @@ allprojects {
     }
 }
 
-
-
 project('sdk') {
     afterEvaluate {
         publishing {
@@ -43,6 +42,7 @@ project('sdk') {
             }
             publications {
                 sdk(MavenPublication) {
+                    from components.findByName('sdk')
                     groupId = "com.github.swaarm"
                     artifactId = "android-sdk"
                     version = rootProject.ext.sdkVersion
