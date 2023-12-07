@@ -3,11 +3,12 @@ apply plugin: 'com.android.application'
 buildscript {
     ext.kotlin_version = '1.6.0'
 }
+
 android {
-    compileSdkVersion 33
+    compileSdk 34
     defaultConfig {
         applicationId 'com.swaarm.sdkxmple'
-        targetSdkVersion 33
+        targetSdkVersion 34
         minSdkVersion 24
         versionCode 8
         versionName "1.0"
@@ -17,7 +18,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.github.swaarm:android-sdk:v0.2.0-install-referrer-BETA5'
+    implementation 'com.github.swaarm:android-sdk:v0.2.0-RC13'
     //implementation project(':sdk') //for development
 
     implementation "com.android.billingclient:billing-ktx:6.1.0"
