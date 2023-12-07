@@ -16,7 +16,6 @@ android {
         abortOnError false
     }
     namespace 'com.swaarm.sdk'
-
 }
 
 dependencies {
