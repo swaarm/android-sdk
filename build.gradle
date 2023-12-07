@@ -31,20 +31,20 @@ allprojects {
 }
 
 project('sdk') {
-    publishing {
-        repositories {
-            maven {
-                name = "JitPack"
-                url = uri("https://jitpack.io")
+    afterEvaluate {
+        publishing {
+            repositories {
+                maven {
+                    name = "JitPack"
+                    url = uri("https://jitpack.io")
+                }
             }
-        }
-        publications {
-            sdk(MavenPublication) {
-                groupId = "com.github.swaarm"
-                artifactId = "android-sdk"
-
-                version = rootProject.ext.sdkVersion
-                artifact("$buildDir/outputs/aar/sdk-release.aar")
+            publications {
+                sdk(MavenPublication) {
+                    groupId = "com.github.swaarm"
+                    artifactId = "android-sdk"
+                    version = rootProject.ext.sdkVersion
+                }
             }
         }
     }
