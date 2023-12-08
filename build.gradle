@@ -41,12 +41,11 @@ project('sdk') {
                 }
             }
             publications {
-                sdk(MavenPublication) {
-                    from components.findByName('sdk')
+                release(MavenPublication) {
+                    from components.findByName('release')
                     groupId = "com.github.swaarm"
                     artifactId = "android-sdk"
                     version = rootProject.ext.sdkVersion
-                    artifact("$buildDir/outputs/aar/sdk-release.aar")
                 }
             }
         }

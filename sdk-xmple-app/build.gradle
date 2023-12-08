@@ -18,8 +18,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.github.swaarm:android-sdk:v0.2.0-RC15'
-    implementation project(':sdk') //for development
+    implementation 'com.github.swaarm:android-sdk:v0.2.0-install-referrer-BETA5'
+    //implementation project(':sdk') //for development
 
     implementation "com.android.billingclient:billing-ktx:6.1.0"
 
