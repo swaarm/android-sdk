@@ -46,6 +46,7 @@ project('sdk') {
                     groupId = "com.github.swaarm"
                     artifactId = "android-sdk"
                     version = rootProject.ext.sdkVersion
+                    artifact("$buildDir/outputs/aar/sdk-release.aar")
                 }
             }
         }
