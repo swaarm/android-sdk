@@ -13,6 +13,8 @@ import com.swaarm.sdk.common.DeviceInfo;
 import com.swaarm.sdk.common.HttpClient;
 import com.swaarm.sdk.common.Logger;
 import com.swaarm.sdk.common.Network;
+import com.swaarm.sdk.common.model.AttributionDataConsumer;
+import com.swaarm.sdk.common.model.DeepLinkConsumer;
 import com.swaarm.sdk.common.model.SdkConfiguration;
 import com.swaarm.sdk.common.model.Session;
 import com.swaarm.sdk.common.model.SwaarmConfig;
@@ -39,9 +41,18 @@ public class SwaarmAnalytics {
     private static EventRepository eventRepository;
     private static DeviceInfo deviceInfo;
     private static InstallReferrerProcessor installReferrerProcessor;
+    private static AttributionDataHandler attributionDataHandler;
 
     public static void configure(final SwaarmConfig config) {
         configure(config, null);
+    }
+
+    public void onAttribution(AttributionDataConsumer consumer) {
+        attributionDataHandler.setAttributionDataConsumer(consumer);
+    }
+
+    public void onDeepLink(DeepLinkConsumer deepLinkConsumer) {
+        attributionDataHandler.setDeepLinkConsumer(deepLinkConsumer);
     }
 
     public static void configure(final SwaarmConfig config, Runnable onComplete) {
@@ -106,6 +117,9 @@ public class SwaarmAnalytics {
                     EventPublisher eventPublisher = new EventPublisher(eventRepository, trackerState, httpClient);
                     eventPublisher.start();
 
+                    attributionDataHandler = new AttributionDataHandler(httpClient, config, deviceInfo.getAppSetId());
+                    attributionDataHandler.startAttribution();
+
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "Failed to initialize Swaarm SDK", e);
                     return;
@@ -120,6 +134,7 @@ public class SwaarmAnalytics {
             }
         });
     }
+
 
     public static void installEvent(InstallReferrerData installReferrerData) {
         executeWhenInitialized(new Runnable() {

@@ -3,6 +3,8 @@ package com.swaarm.sdk.common;
 import android.util.Log;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
+
 import com.swaarm.sdk.common.model.SwaarmConfig;
 
 import java.io.BufferedReader;
@@ -98,7 +100,7 @@ public class HttpClient {
         urlConnection.setRequestProperty("Content-Encoding", "gzip");
         urlConnection.setRequestProperty("Content-Type", "application/json");
         urlConnection.setRequestProperty("User-Agent", userAgent);
-        urlConnection.setRequestProperty("Authorization", "Bearer "+ config.getAccessToken());
+        urlConnection.setRequestProperty("Authorization", "Bearer " + config.getAccessToken());
 
         urlConnection.setDoOutput(true);
         urlConnection.connect();
@@ -125,6 +127,15 @@ public class HttpClient {
 
         public boolean isSuccess() {
             return statusCode != null && statusCode >= 200 && statusCode <= 299;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "HttpResponse{" +
+                    "data='" + data + '\'' +
+                    ", statusCode=" + statusCode +
+                    '}';
         }
     }
 }

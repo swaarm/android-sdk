@@ -47,7 +47,7 @@ public class EventPublisher {
         failedAttempts = 0;
         debug(LOG_TAG, "Started");
 
-        scheduler.scheduleAtFixedRate(new Runnable() {
+        scheduler.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
                 try {
