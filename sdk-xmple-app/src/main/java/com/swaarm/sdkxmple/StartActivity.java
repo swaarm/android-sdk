@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import com.swaarm.sdk.SwaarmAnalytics;
 import com.swaarm.sdk.common.Consumer;
 import com.swaarm.sdk.common.DeviceInfo;
+import com.swaarm.sdk.common.model.SwaarmConfig;
 
 public class StartActivity extends Activity {
 
@@ -15,6 +18,13 @@ public class StartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
+        SwaarmConfig config = new SwaarmConfig(
+                this.getApplication(),
+                "track.hector.swaarm-app.com",
+                "bff74d36-19ea-407d-bc21-bd911e068e89"
+        );
+
+        SwaarmAnalytics.configure(config, SwaarmAnalytics::enableBreakpointTracking);
 
         if (SwaarmAnalytics.isInitialized()) {
             findViewById(R.id.begin).setEnabled(false);

@@ -4,12 +4,12 @@ buildscript {
     ext.kotlin_version = '1.6.0'
 }
 android {
-    compileSdkVersion 33
+    compileSdkVersion 35
     defaultConfig {
         applicationId 'com.swaarm.sdkxmple'
-        targetSdkVersion 33
+        targetSdkVersion 35
         minSdkVersion 24
-        versionCode 8
+        versionCode 10
         versionName "1.0"
     }
     namespace 'com.swaarm.sdkxmple'

@@ -57,8 +57,8 @@ public class EventActivity extends Activity {
     private void initSdk(Bundle userConfigValues) {
         SwaarmConfig config = new SwaarmConfig(
                 this.getApplication(),
-                userConfigValues.getString("trackerHostname"),
-                userConfigValues.getString("accessToken")
+                "track.hector.swaarm-app.com",
+                "bff74d36-19ea-407d-bc21-bd911e068e89"
         );
 
         String appSetId = userConfigValues.getString("appSetId");
