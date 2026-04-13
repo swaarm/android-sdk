@@ -47,12 +47,22 @@ public class SwaarmAnalytics {
         configure(config, null);
     }
 
-    public void onAttribution(AttributionDataConsumer consumer) {
-        attributionDataHandler.setAttributionDataConsumer(consumer);
+    public static void onAttribution(AttributionDataConsumer consumer) {
+        executeWhenInitialized(new Runnable() {
+            @Override
+            public void run() {
+                attributionDataHandler.setAttributionDataConsumer(consumer);
+            }
+        });
     }
 
-    public void onDeepLink(DeepLinkConsumer deepLinkConsumer) {
-        attributionDataHandler.setDeepLinkConsumer(deepLinkConsumer);
+    public static void onDeepLink(DeepLinkConsumer deepLinkConsumer) {
+        executeWhenInitialized(new Runnable() {
+            @Override
+            public void run() {
+                attributionDataHandler.setDeepLinkConsumer(deepLinkConsumer);
+            }
+        });
     }
 
     public static void configure(final SwaarmConfig config, Runnable onComplete) {

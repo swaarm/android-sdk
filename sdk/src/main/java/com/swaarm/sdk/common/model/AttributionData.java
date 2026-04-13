@@ -7,6 +7,7 @@ public class AttributionData {
     private AttributionPublisher publisher;
     private Ids ids;
     private PostbackDecision decision;
+    private GoogleInstallReferrerData googleInstallReferrer;
 
     public AttributionData() {
     }
@@ -21,23 +22,18 @@ public class AttributionData {
         try {
             JSONObject json = new JSONObject(jsonString);
 
-            // Parse AttributionOffer
             if (json.has("offer") && !json.isNull("offer")) {
                 attributionData.offer = AttributionOffer.fromJson(json.getJSONObject("offer"));
             }
 
-            // Parse AttributionPublisher
             if (json.has("publisher") && !json.isNull("publisher")) {
                 attributionData.publisher = AttributionPublisher.fromJson(json.getJSONObject("publisher"));
             }
 
-            // Parse Ids
             if (json.has("ids") && !json.isNull("ids")) {
-                String idsJson = json.getJSONObject("ids").toString();
                 attributionData.ids = Ids.fromJson(json.getJSONObject("ids"));
             }
 
-            // Parse PostbackDecision enum
             if (json.has("decision") && !json.isNull("decision")) {
                 try {
                     String decisionStr = json.getString("decision");
@@ -47,14 +43,16 @@ public class AttributionData {
                 }
             }
 
+            if (json.has("googleInstallReferrer") && !json.isNull("googleInstallReferrer")) {
+                attributionData.googleInstallReferrer = GoogleInstallReferrerData.fromJson(json.getJSONObject("googleInstallReferrer"));
+            }
+
         } catch (Exception e) {
             // Returning partially filled or empty attribution data object in case of parsing errors
-            // Optionally add logging here
         }
 
         return attributionData;
     }
-
 
     public AttributionOffer getOffer() {
         return offer;
@@ -86,5 +84,13 @@ public class AttributionData {
 
     public void setDecision(PostbackDecision decision) {
         this.decision = decision;
+    }
+
+    public GoogleInstallReferrerData getGoogleInstallReferrer() {
+        return googleInstallReferrer;
+    }
+
+    public void setGoogleInstallReferrer(GoogleInstallReferrerData googleInstallReferrer) {
+        this.googleInstallReferrer = googleInstallReferrer;
     }
 }

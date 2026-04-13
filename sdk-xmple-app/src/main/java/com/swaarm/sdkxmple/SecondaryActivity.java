@@ -1,11 +1,12 @@
 package com.swaarm.sdkxmple;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 
-public class SecondaryActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
+public class SecondaryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,7 +15,7 @@ public class SecondaryActivity extends Activity {
 
         findViewById(R.id.showFragment).setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_placeholder, new TestFragment());
                 ft.commit();
             }

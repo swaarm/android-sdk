@@ -68,14 +68,16 @@ public class AttributionDataHandler {
     }
 
     private boolean fetch() {
-        String url = this.attributionDataUrl + "&vendorId=" + userId;
+        String url = this.attributionDataUrl + "?vendorId=" + userId;
         try {
             HttpClient.HttpResponse response = httpClient.get(url);
             if (response.isSuccess()) {
                 attributionData = AttributionData.fromJson(response.getData());
                 if (attributionData.getDecision() != null) {
                     Logger.debug(LOG_TAG, "Received attribution data: " + attributionData);
-                    attributionDataConsumer.accept(attributionData);
+                    if (attributionDataConsumer != null) {
+                        attributionDataConsumer.accept(attributionData);
+                    }
                     return true;
                 }
             }
@@ -91,8 +93,10 @@ public class AttributionDataHandler {
             HttpClient.HttpResponse response = httpClient.get(this.deepLinkUrl);
             if (response.isSuccess()) {
                 if (attributionData != null && attributionData.getDecision() != null) {
-                    deepLinkConsumer.accept(response.getData());
                     this.deepLink = response.getData();
+                    if (deepLinkConsumer != null) {
+                        deepLinkConsumer.accept(response.getData());
+                    }
                     return true;
                 }
             }

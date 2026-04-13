@@ -34,14 +34,32 @@ public class SdkConfiguration {
     }
 
     public Long getEventFlushFrequency() {
-        return Long.valueOf(properties.getProperty(PROPERTY_SWAARM_SDK_EVENT_FLUSH_FREQUENCY_IN_SECONDS));
+        String value = properties.getProperty(PROPERTY_SWAARM_SDK_EVENT_FLUSH_FREQUENCY_IN_SECONDS);
+        try {
+            return Long.valueOf(value);
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Invalid or missing " + PROPERTY_SWAARM_SDK_EVENT_FLUSH_FREQUENCY_IN_SECONDS + ", using default 10");
+            return 10L;
+        }
     }
 
     public Integer getEventFlushBatchSize() {
-        return Integer.valueOf(properties.getProperty(PROPERTY_SWAARM_SDK_EVENT_FLUSH_BATCH_SIZE));
+        String value = properties.getProperty(PROPERTY_SWAARM_SDK_EVENT_FLUSH_BATCH_SIZE);
+        try {
+            return Integer.valueOf(value);
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Invalid or missing " + PROPERTY_SWAARM_SDK_EVENT_FLUSH_BATCH_SIZE + ", using default 50");
+            return 50;
+        }
     }
 
     public Integer getEventStorageSizeLimit() {
-        return Integer.valueOf(properties.getProperty(PROPERTY_SWAARM_SDK_EVENT_STORAGE_SIZE_LIMIT));
+        String value = properties.getProperty(PROPERTY_SWAARM_SDK_EVENT_STORAGE_SIZE_LIMIT);
+        try {
+            return Integer.valueOf(value);
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Invalid or missing " + PROPERTY_SWAARM_SDK_EVENT_STORAGE_SIZE_LIMIT + ", using default 500");
+            return 500;
+        }
     }
 }
