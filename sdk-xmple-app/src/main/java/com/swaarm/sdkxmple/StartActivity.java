@@ -1,18 +1,19 @@
 package com.swaarm.sdkxmple;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.swaarm.sdk.SwaarmAnalytics;
 import com.swaarm.sdk.common.Consumer;
 import com.swaarm.sdk.common.DeviceInfo;
 import com.swaarm.sdk.common.model.SwaarmConfig;
 
-public class StartActivity extends Activity {
+public class StartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

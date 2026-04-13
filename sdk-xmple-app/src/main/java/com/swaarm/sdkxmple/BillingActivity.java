@@ -4,11 +4,12 @@ import static java.util.Optional.*;
 
 import androidx.annotation.NonNull;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public class BillingActivity extends Activity {
+public class BillingActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "SW_BILLING";
 
